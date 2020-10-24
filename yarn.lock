@@ -3747,6 +3747,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+dat.gui@^0.7.7:
+  version "0.7.7"
+  resolved "https://registry.npm.taobao.org/dat.gui/download/dat.gui-0.7.7.tgz#7f96dbd21621a76385203659aebfa264ee6ae89b"
+  integrity sha1-f5bb0hYhp2OFIDZZrr+iZO5q6Js=
+
 data-urls@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/data-urls/download/data-urls-2.0.0.tgz#156485a72963a970f5d5821aaf642bef2bf2db9b"
@@ -10399,6 +10404,11 @@ text-table@0.2.0, text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npm.taobao.org/text-table/download/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
+
+three@^0.121.1:
+  version "0.121.1"
+  resolved "https://registry.npm.taobao.org/three/download/three-0.121.1.tgz?cache=0&sync_timestamp=1601486047592&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fthree%2Fdownload%2Fthree-0.121.1.tgz#fda39cf4701d02be9c3be5c27ccea24b7a1ea59b"
+  integrity sha1-/aOc9HAdAr6cO+XCfM6iS3oepZs=
 
 throat@^5.0.0:
   version "5.0.0"
