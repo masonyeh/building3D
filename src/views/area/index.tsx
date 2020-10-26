@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-// import Ground from './around/Ground';
+import Ground from './lib/around/Ground';
 
 /**
  * 内部全局对象
@@ -77,7 +77,7 @@ export default function Index(){
    */
   function loadArea(){
 
-    // new Ground();
+    new Ground();
   }
 
   return (

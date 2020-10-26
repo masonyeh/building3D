@@ -24,6 +24,5 @@
     "src"
   ],
   "typeRoots": [
-    "src/@types"
   ]
 }
