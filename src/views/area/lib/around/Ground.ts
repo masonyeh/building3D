@@ -18,26 +18,30 @@ export default class Ground extends THREE.Group{
    * 绘画
    */
   draw(){
-    let geometry = new THREE.PlaneGeometry(50, 50, 4, 4)
-    const textureLoader = new THREE.TextureLoader()
-                                   .load(groundImg,
-                                         function(texture){
-                                            console.log('load:',texture);
-                                        },
-                                        function(event){
-                                            console.log('event:',event);
-                                        },
-                                        function(error){
-                                          console.error('error:',error)
-                                        }
-                                        );
+    // const {innerHeight,innerWidth} = window;
+    // let geometry = new THREE.PlaneGeometry(innerWidth, innerHeight, 4, 4)
+    // const textureLoader = new THREE.TextureLoader()
+    //                                .load(groundImg,
+    //                                      function(texture){
+    //                                         console.log('load:',texture);
+    //                                     },
+    //                                     function(event){
+    //                                         console.log('event:',event);
+    //                                     },
+    //                                     function(error){
+    //                                       console.error('error:',error)
+    //                                     }
+    //                                     );
 
-    let material = new THREE.MeshBasicMaterial({
-      map: textureLoader
-    })
-    let ground = new THREE.Mesh(geometry, material)
-    ground.rotation.x = - Math.PI / 2
-    this.add(ground)
+    // let material = new THREE.MeshBasicMaterial({
+    //   map: textureLoader
+    // })
+    // let ground = new THREE.Mesh(geometry, material)
+    // ground.rotation.x = - Math.PI / 2
+    // this.add(ground)
+
+    // var grid = new THREE.GridHelper(innerWidth, innerHeight);
+    // this.add(grid);
   }
 
 
