@@ -4,21 +4,14 @@ import groundImg from '../../images/ground.jpg'
 /**
  * 地面类
  */
-export default class Ground {
-  ui:THREE.Group = new THREE.Group(); 
+export default class Ground extends THREE.Group{
 
   /**
    * 构造函数
    */
   constructor(){
+    super();
     this.draw();
-  }
-
-  /**
-   * 获取ui绘画部分
-   */
-  getUI(){
-    return this.ui;
   }
 
   /**
@@ -44,7 +37,7 @@ export default class Ground {
     })
     let ground = new THREE.Mesh(geometry, material)
     ground.rotation.x = - Math.PI / 2
-    this.ui.add(ground)
+    this.add(ground)
   }
 
 
