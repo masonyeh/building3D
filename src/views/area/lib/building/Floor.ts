@@ -1,8 +1,7 @@
 import * as THREE from 'three';
-import { Wall } from '..';
+import { Wall,Map } from '..';
 
 export default class Floor extends THREE.Group{
-
   /**
    * 构造函数
    */
@@ -21,8 +20,9 @@ export default class Floor extends THREE.Group{
     // let ground = new THREE.Mesh(geometry, material)
     // ground.rotation.x = - Math.PI / 2
     // this.add(ground)
-
+    const map = new Map();
     const wall = new Wall();
+    this.add(map);
     this.add(wall);
   }
 

@@ -50,8 +50,8 @@ export default function Index(){
     // 创建一个场景
     const scene = global.scene =  new THREE.Scene()
     // 创建一个具有透视效果的摄像机
-    const camera = global.camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000)
-    camera.position.set( 0, 0, 200 );
+    const camera = global.camera = new THREE.PerspectiveCamera(75, width / height, 1, 10000)
+    camera.position.set( 10, 130, 100 );
 
     // 创建一个 WebGL 渲染器，Three.js 还提供 <canvas>, <svg>, CSS3D 渲染器。
     const renderer = global.renderer =  new THREE.WebGLRenderer({ antialias: true } )
@@ -84,7 +84,7 @@ export default function Index(){
     controls.minDistance = 10;
     controls.maxDistance = 5000;
 
-    controls.maxPolarAngle = Math.PI / 2;
+    // controls.maxPolarAngle = Math.PI / 2;
 
     loadDemo();
     animate();
@@ -95,47 +95,39 @@ export default function Index(){
    */
   function loadDemo(){
     const {scene} = globalRef.current;
-    var geometry = new THREE.CylinderBufferGeometry( 0, 10, 30, 4, 1 );
-    var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: false } );
+    // var geometry = new THREE.CylinderBufferGeometry( 0, 10, 30, 4, 1 );
+    // var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: false } );
 
-    for ( var i = 0; i < 500; i ++ ) {
+    // for ( var i = 0; i < 100; i ++ ) {
 
-      var mesh = new THREE.Mesh( geometry, material );
-      mesh.position.x = Math.random() * 1600 - 800;
-      mesh.position.y = 0;
-      mesh.position.z = Math.random() * 1600 - 800;
-      mesh.updateMatrix();
-      mesh.matrixAutoUpdate = false;
-      scene.add( mesh );
-    }
+    //   var mesh = new THREE.Mesh( geometry, material );
+    //   mesh.position.x = Math.random() * 1600 - 800;
+    //   mesh.position.y = 15;
+    //   mesh.position.z = Math.random() * 1600 - 800;
+    //   mesh.updateMatrix();
+    //   mesh.matrixAutoUpdate = false;
+    //   scene.add( mesh );
+    // }
+    
+    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.8 );    //环境光
+    scene.add( ambientLight );
+    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );       //直射光
+    directionalLight.position.set( 1, 1, 0 ).normalize();
+    scene.add( directionalLight );
+    
+
 
     // lights
-    var light = new THREE.DirectionalLight( 0xffffff );
-    light.position.set( 1, 1, 1 );
-    scene.add( light );
+    // var light = new THREE.DirectionalLight( 0xffffff );
+    // light.position.set( 1, 1, 1 );
+    // scene.add( light );
 
-    var light1 = new THREE.DirectionalLight( 0x002288 );
-    light.position.set( - 1, - 1, - 1 );
-    scene.add( light1 );
+    // var light1 = new THREE.DirectionalLight( 0x002288 );
+    // light.position.set( - 1, - 1, - 1 );
+    // scene.add( light1 );
 
-    var light2 = new THREE.AmbientLight( 0x222222 );
-    scene.add( light2 );
-
-    let heartShape = new THREE.Shape();
-    heartShape.moveTo( 0, 0 );
-    heartShape.lineTo(100,100);
-    heartShape.bezierCurveTo( 25, 25, 20, 0, 0, 0 );
-    heartShape.bezierCurveTo( 30, 0, 30, 35,30,35 );
-    heartShape.bezierCurveTo( 30, 55, 10, 77, 25, 95 );
-    heartShape.bezierCurveTo( 60, 77, 80, 55, 80, 35 );
-    heartShape.bezierCurveTo( 80, 35, 80, 0, 50, 0 );
-    heartShape.bezierCurveTo( 35, 0, 25, 25, 25, 25 );
-
-    let extrudeSettings = { amount: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
-
-    let geometry2 = new THREE.ExtrudeGeometry( heartShape, extrudeSettings );
-    let mesh2     = new THREE.Mesh( geometry2, new THREE.MeshPhongMaterial() );
-    scene.add(mesh2);
+    // var light2 = new THREE.AmbientLight( 0x222222 );
+    // scene.add( light2 );
 
   }
 
@@ -148,7 +140,7 @@ export default function Index(){
     const ground    = new Ground();
     const building = new Building();
     global.group.add(ground);
-    // global.group.add(building);
+    global.group.add(building);
   }
 
   function animate() {

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>
+    </title>
+  </head>
+  <style>
+
+  </style>
+  <body>
+    <button onclick="close()">关闭转换 开始绘图0</button>
+    <script src="./js/three.min.js"></script>
+    <script src="./js/OrbitControls.js"></script>
+    <!--<script src="./index.js"></script>-->
+    <script>
+        var parametersBuilding = {
+            buildingHeight: null,
+            buildingWidth: null,
+            roomHeight:50,
+            roomWidth: null,
+            elevation: 0, // 楼房一楼的海拔
+            // 墙壁的高度
+            wall: 50,
+            // 墙壁的颜色
+            wallColor:0x111111,
+        }
+        // 鼠标二维坐标投射光线 判断是否实物
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+
+
+        window.addEventListener('DOMContentLoaded', () =>{
+            //创建渲染器
+            const renderer = new THREE.WebGLRenderer({antialias: true})
+            //渲染器背景颜色
+            renderer.setClearColor(0xffffff, 1)
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.domElement.style.zIndex = 5;
+        renderer.domElement.style.cursor = 'crosshair'
+          document.body.appendChild(renderer.domElement);
+
+          // 摄像机
+          const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+          camera.position.set(0, 0, 300)
+
+          controls = new THREE.OrbitControls( camera, renderer.domElement )
+
+          // 创建场景
+          const scene = new THREE.Scene();
+
+          // 环境灯  AmbientLight
+          const keyLight = new THREE.AmbientLight(0xffffff, 0.5)
+          scene.add(keyLight);
+          // 所有光 Light （其他光会继承）
+          // 点光源 PointLight
+          const pointLight = new THREE.PointLight(0xffffff, 0.5)
+          pointLight.position.set(0, 0, 1000)
+          scene.add(pointLight);
+          // 平行光  DirectionalLight
+          const DirectionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+          DirectionalLight.position.set(1000, 1000, 1000)
+          scene.add(DirectionalLight);
+          // 天空投射下来的光 HemisphereLight
+          // 平面光源 如窗户射进房间的光 RectAreaLight
+          // 聚光灯 SpotLight
+
+
+
+
+
+          // 所有光的阴影（其他光会继承）LightShadow4
+          // 平行光阴影 DirectionalLightShadow
+
+          // 聚光灯阴影 SpotLightShadow
+
+
+
+
+          // 所有的材质 Material （其他材质会继承）
+          // 实线材质 LineBasicMaterial
+          // 虚线材质 LineDashedMaterial
+
+
+
+
+          // 创建一个实物
+          const cubeGeometry = new THREE.BoxGeometry(1000, 1, 1000) //maybe CubeGeometry
+          const cubeMaterial = new THREE.MeshLambertMaterial(
+              {
+                  color: 0xa0adaf,
+                  shininess: 10,
+                  specular: 0x111111,
+                  transparent : true, //是否使用透明
+                  opacity :0.5, // 如果模型的transparent设置为true时，模型的透明度（0~1）
+                  wireframe: false //是否渲染线而非面
+
+              });
+          const floor = new THREE.Mesh(cubeGeometry, cubeMaterial)
+          // 地面
+          floor.position.set(0, parametersBuilding.elevation, 0)
+          scene.add(floor)
+          var wall001Geometry = new THREE.BoxGeometry(400, parametersBuilding.roomHeight,10)
+          var wall001Material = new THREE.MeshLambertMaterial(
+              {
+                  color: 0xff6666,
+                  shininess: 10,
+                  specular: 0x111111,
+                  transparent : true, //是否使用透明
+                  opacity :0.5, // 如果模型的transparent设置为true时，模型的透明度（0~1）
+                  wireframe: false //是否渲染线而非面
+
+              });
+        const wall001 = new THREE.Mesh(wall001Geometry, wall001Material)
+        wall001.position.set(0, parametersBuilding.roomHeight/2, 50)
+        scene.add(wall001)
+        var wall002Geometry = new THREE.BoxGeometry(400, parametersBuilding.roomHeight,10)
+        var wall002Material = new THREE.MeshLambertMaterial(
+            {
+                color: 0xff6666,
+                shininess: 10,
+                specular: 0x111111,
+                transparent : true, //是否使用透明
+                opacity :0.5, // 如果模型的transparent设置为true时，模型的透明度（0~1）
+                wireframe: false //是否渲染线而非面
+
+            });
+        const wall002 = new THREE.Mesh(wall001Geometry, wall001Material)
+        wall002.position.set(0, parametersBuilding.roomHeight/2, -50)
+        scene.add(wall002)
+        // 创建楼层内部实物
+
+          //
+          // const galleryGeometry = new THREE.BoxGeometry(750, 750, 750)
+          // const galleryMaterial = new THREE.MeshLambertMaterial({color: "#9eb8e2"})
+          // const galleryMesh = new THREE.Mesh(galleryGeometry, galleryMaterial)
+          //   galleryMesh.position.set(0, 0, 0)
+          //   scene.add(galleryMesh)
+
+          //FOR USER DIMS
+          const dimX = 500
+          const dimY = 1000
+          const dimZ = 1000
+
+          // Floor
+          // const theFloor = new THREE.Mesh( new THREE.PlaneGeometry( dimX, dimY), new THREE.MeshBasicMaterial({color: "#fff" }) );
+          // theFloor.position.y = 0;
+          // theFloor.rotation.x = - Math.PI / 2;
+          // //theFloor.side = THREE.DoubleSide;
+          // scene.add( theFloor );
+
+          const wallMaterial = new THREE.MeshLambertMaterial({color: "#fff" })
+
+          var degra = (degree) => {
+              return degree*(Math.PI/180);
+          }
+
+          //
+          // //LEFT WALL
+          // const leftWall = new THREE.Mesh( new THREE.PlaneGeometry( dimY, dimZ ), wallMaterial );
+          // leftWall.side = THREE.DoubleSide;
+          // leftWall.position.y =  (dimZ/2);
+          // leftWall.position.x = -(dimX/2);
+          // leftWall.rotation.y = degra(90);
+          // scene.add( leftWall );
+          //
+          // //RIGHT WALL
+          // const rightWall = new THREE.Mesh( new THREE.PlaneGeometry( dimY, dimZ), wallMaterial );
+          // rightWall.side = THREE.DoubleSide;
+          // rightWall.position.y =  (dimZ/2);
+          // rightWall.position.x =  (dimX/2);
+          // rightWall.rotation.y =  - Math.PI / 2;
+          // scene.add( rightWall );
+          //
+          // //FAR WALL
+          // const farWall = new THREE.Mesh( new THREE.PlaneGeometry( dimX, dimZ ), wallMaterial );
+          // farWall.side = THREE.DoubleSide;
+          // farWall.position.y =   (dimZ/2);
+          // farWall.position.x =   0;
+          // farWall.position.z =  -(dimY/2);
+          // farWall.rotation.x = - degra(0);
+          // scene.add( farWall );
+          //
+          // // NEAR WALL
+          // const nearWall = new THREE.Mesh( new THREE.PlaneGeometry( dimX, dimZ), wallMaterial );
+          //      nearWall.side = THREE.DoubleSide;
+          //      nearWall.position.y =   (dimZ/2);
+          //      nearWall.position.x =   0;
+          //      nearWall.position.z =   (dimY/2);
+          //      nearWall.rotation.x = - degra(0);
+          //      scene.add( nearWall );
+
+
+          //SKYBOX!!!!!!
+          // THREE.ImageUtils.crossOrigin = "";
+
+          // const urls = [
+          //   './images/right.jpg',
+          //   './images/left.jpg',
+          //   './images/top.jpg',
+          //   './images/bottom.jpg',
+          //   './images/front.jpg',
+          //   './images/back.jpg'
+          // ]
+          //
+          // const cubeMap = THREE.ImageUtils.loadTextureCube(urls)
+          // cubeMap.format = THREE.RGBFormat
+
+          // scene.background = new THREE.CubeTextureLoader()
+          //   .setCrossOrigin("")
+          //   .setPath( './images/' )
+          //   .load( [
+          // 		'right.jpg',
+          // 		'left.jpg',
+          // 		'top.jpg',
+          // 		'bottom.jpg',
+          // 		'front.jpg',
+          // 		'back.jpg'
+          // 	] );
+
+
+          // const shader = THREE.ShaderLib[ "cube" ]
+          // shader.uniforms[ "tCube" ].value = cubeMap
+          //
+          // const cubeMapMaterial = new THREE.ShaderMaterial({
+          //   fragmentShader: shader.fragmentShader,
+          //   vertexShader: shader.vertexShader,
+          //   uniforms: shader.uniforms,
+          //   depthWrite: false,
+          //   side: THREE.DoubleSide
+          // })
+          //
+          // const skyBox = new THREE.Mesh(new THREE.BoxGeometry(1000, 1000, 1000), cubeMapMaterial)
+          // scene.add(skyBox)
+
+          //RENDER LOOP
+          requestAnimationFrame(render);
+          function render(){
+              // cubeMesh.rotation.y += 0.01;
+              // cubeMesh.rotation.x += 0.01;
+              renderer.render(scene, camera);
+              requestAnimationFrame(render);
+          }
+        function onDocumentMousemove (e) {
+            e.preventDefault()
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            var vector = new THREE.Vector3(mouse.x, mouse.y,0.5).unproject(camera);
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+            var intersects = raycaster.intersectObjects(scene.children);
+            console.log(vector)
+        }
+        var isClick = true
+        var x1,x2,y1,y2,z1,z2
+        function onDocumentClick (e) {
+            e.preventDefault()
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            var vector = new THREE.Vector3(mouse.x, mouse.y,1).unproject(camera);
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+            var intersects = raycaster.intersectObjects(scene.children);
+            console.log('imtersrcts=' + intersects)
+            if (intersects.length > 0) {
+                // console.log( vector.sub(camera.position).normalize())
+                //选中第一个射线相交的物体
+                var selected = intersects[0]
+                SELECTED = intersects[0].object;
+                var intersected = intersects[0].object;
+                console.log(`x:${selected.point.x},y:${selected.point.y},z:${selected.point.z}`)
+                    if (isClick) {
+                        x1 = selected.point.x
+                        y1 = selected.point.y
+                        z1 = selected.point.z
+                        isClick = false
+                    } else {
+                        x2 = selected.point.x
+                        y2 = selected.point.y
+                        z2 = selected.point.z
+                        if(getDistance(x1, x2) > getDistance(z1, z2)){
+                            var wallGeometry = new THREE.BoxGeometry(getDistance(x1, x2), parametersBuilding.roomHeight,10)
+                        } else {
+                            var wallGeometry = new THREE.BoxGeometry(10, parametersBuilding.roomHeight,getDistance(z1, z2))
+                        }
+                        console.log(getDistance(x1, x2), getDistance(z1, z2))
+                        var wallMaterial = new THREE.MeshLambertMaterial(
+                            {
+                                color: 0xff6666,
+                                shininess: 10,
+                                specular: 0x111111,
+                                transparent : true, //是否使用透明
+                                opacity :0.5, // 如果模型的transparent设置为true时，模型的透明度（0~1）
+                                wireframe: false //是否渲染线而非面
+                            });
+                        const wall = new THREE.Mesh(wallGeometry, wallMaterial)
+                        if(getDistance(x1, x2) > getDistance(z1, z2)){
+                            wall.position.set(getDisplacement(x1, x2, getDistance(x1, x2)), parametersBuilding.roomHeight/2, z1)
+                        } else {
+                            wall.position.set(x1, parametersBuilding.roomHeight/2, getDisplacement(z1, z2, getDistance(z1, z2)))
+                        }
+                        scene.add(wall)
+                        isClick = true
+                    }
+                }
+        }
+        window.addEventListener('click',onDocumentClick)
+        // window.addEventListener('mousemove',onDocumentMousemove)
+        })
+        //
+        function getDistance (v1 ,v2) {
+            var distance
+            if (v1 > 0) {
+                if(v2 > 0) {
+                    distance = Math.abs(Math.abs(v1) - Math.abs(v2))
+                } else {
+                    distance = Math.abs(v1) + Math.abs(v2)
+                }
+            } else {
+                if(v2 > 0) {
+                    distance = Math.abs(v2) + Math.abs(v1)
+                } else {
+                    distance = Math.abs(Math.abs(v1) - Math.abs(v2))
+                }
+            }
+            return distance
+        }
+        function getDisplacement (v1, v2, v3) {
+            var displacement
+            if (v1 > 0) {
+                if(v2 > 0) {
+                    displacement = v3/2 + Math.abs(v1) > Math.abs(v2) ? Math.abs(v2) : Math.abs(v1)
+                } else {
+                    displacement =  Math.abs(v1) - v3/2
+                }
+            } else {
+                if(v2 > 0) {
+                    displacement = Math.abs(v2) - v3/2
+                } else {
+                    displacement = v3/2 + Math.abs(v1) < Math.abs(v2) ? Math.abs(v2) : Math.abs(v1)
+                }
+            }
+            return displacement
+        }
+        function close() {
+            THREE.OrbitControls.dispose()
+        }
+    </script>
+  </body>
+</html>

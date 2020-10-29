@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>电表demo</title>
+</head>
+<body>
+
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/three.min.js"></script>
+    <script src="./js/OrbitControls.js"></script>
+    <script src="./js/CanvasRenderer.js"></script>
+    <script src="./js/myThree.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{},
+            methods:{
+                init: function() {
+                    requestAnimationFrame(myThree("app",{
+                        buildingX:500,
+                        buildingY:100,
+                        buildingZ:500,
+                        pliesTotal:6,
+                        rendererBackground:0xffffff,
+                        buildingColor: 0x0066ff,
+                        groundColor: 0x00ff66,
+                        roomGroundColor: 0xa0adaf,
+                        elevation: 0,
+                        wallHeight: 20,
+                    }));
+                }
+            }
+        })
+        vm.init()
+    </script>
+</body>
+</html>

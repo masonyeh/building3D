@@ -6,3 +6,4 @@ export {default as Elevator} from './building/Elevator';
 export {default as Floor} from './building/Floor';
 export {default as Gate} from './building/Gate';
 export {default as Wall} from './building/Wall';
+export {default as Map} from './building/Map';

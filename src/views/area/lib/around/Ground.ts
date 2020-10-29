@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import groundImg from '../../images/ground.jpg'
+// import groundImg from '../../images/ground.jpg'
 
 /**
  * 地面类
