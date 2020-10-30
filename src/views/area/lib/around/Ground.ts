@@ -18,7 +18,7 @@ export default class Ground extends THREE.Group{
    * 绘画
    */
   draw(){
-    // const {innerHeight,innerWidth} = window;
+    const {innerHeight,innerWidth} = window;
     // let geometry = new THREE.PlaneGeometry(innerWidth, innerHeight, 4, 4)
     // const textureLoader = new THREE.TextureLoader()
     //                                .load(groundImg,
@@ -40,7 +40,8 @@ export default class Ground extends THREE.Group{
     // ground.rotation.x = - Math.PI / 2
     // this.add(ground)
 
-    // var grid = new THREE.GridHelper(innerWidth, innerHeight);
+    // var grid = new THREE.GridHelper(innerWidth, innerHeight,undefined,0xeeeeee);
+    // grid.rotation.y = -Math.PI / 2
     // this.add(grid);
   }
 

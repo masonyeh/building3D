@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import {Ground,Building} from './lib';
 import {OrbitControls} from './lib/utils/OrbitControls';
-
+import mockData from './mock/data';
 /**
  * 内部全局对象
  */
@@ -17,6 +17,7 @@ interface IGlobal {
   near    : number,
   far     : number
 } 
+
 
 /**
  * 区域UI层
@@ -50,8 +51,8 @@ export default function Index(){
     // 创建一个场景
     const scene = global.scene =  new THREE.Scene()
     // 创建一个具有透视效果的摄像机
-    const camera = global.camera = new THREE.PerspectiveCamera(75, width / height, 1, 10000)
-    camera.position.set( 10, 130, 100 );
+    const camera = global.camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000000)
+    camera.position.set( 30*50, 60*50, 700*50 );
 
     // 创建一个 WebGL 渲染器，Three.js 还提供 <canvas>, <svg>, CSS3D 渲染器。
     const renderer = global.renderer =  new THREE.WebGLRenderer({ antialias: true } )
@@ -61,9 +62,9 @@ export default function Index(){
     renderer.setClearColor(0xffffff)
     renderer.setSize(width, height)
 
-    let axes = new THREE.AxesHelper(100);
-    const cameraHelper = new THREE.CameraHelper(camera);
-    scene.add(cameraHelper);
+    let axes = new THREE.AxesHelper(100000);
+    // const cameraHelper = new THREE.CameraHelper(camera);
+    // scene.add(cameraHelper);
     scene.add(axes);
     
     //加载区域
@@ -74,63 +75,17 @@ export default function Index(){
     // 将渲染器的输出（此处是 canvas 元素）插入到 body 中
     container?.appendChild(renderer.domElement)
     
-    const controls = global.controls =  new OrbitControls( camera, renderer.domElement );
-
-    controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-    controls.dampingFactor = 0.05;
-
+    const controls = global.controls = new OrbitControls( camera, renderer.domElement );
+    controls.enableDamping      = true; // an animation loop is required when either damping or auto-rotation are enabled
     controls.screenSpacePanning = false;
-
-    controls.minDistance = 10;
-    controls.maxDistance = 5000;
-
-    // controls.maxPolarAngle = Math.PI / 2;
+    controls.minDistance        = 10;
+    controls.dampingFactor      = 0.05;
+    controls.maxDistance        = 1000000;
+    // controls.maxPolarAngle   = Math.PI / 2;
 
     loadDemo();
     animate();
   }
-
-  /**
-   * 加载demo数据
-   */
-  function loadDemo(){
-    const {scene} = globalRef.current;
-    // var geometry = new THREE.CylinderBufferGeometry( 0, 10, 30, 4, 1 );
-    // var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: false } );
-
-    // for ( var i = 0; i < 100; i ++ ) {
-
-    //   var mesh = new THREE.Mesh( geometry, material );
-    //   mesh.position.x = Math.random() * 1600 - 800;
-    //   mesh.position.y = 15;
-    //   mesh.position.z = Math.random() * 1600 - 800;
-    //   mesh.updateMatrix();
-    //   mesh.matrixAutoUpdate = false;
-    //   scene.add( mesh );
-    // }
-    
-    var ambientLight = new THREE.AmbientLight( 0xffffff, 0.8 );    //环境光
-    scene.add( ambientLight );
-    var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.3 );       //直射光
-    directionalLight.position.set( 1, 1, 0 ).normalize();
-    scene.add( directionalLight );
-    
-
-
-    // lights
-    // var light = new THREE.DirectionalLight( 0xffffff );
-    // light.position.set( 1, 1, 1 );
-    // scene.add( light );
-
-    // var light1 = new THREE.DirectionalLight( 0x002288 );
-    // light.position.set( - 1, - 1, - 1 );
-    // scene.add( light1 );
-
-    // var light2 = new THREE.AmbientLight( 0x222222 );
-    // scene.add( light2 );
-
-  }
-
 
   /**
    * 加载区域
@@ -139,16 +94,60 @@ export default function Index(){
     const global   = globalRef.current;
     const ground    = new Ground();
     const building = new Building();
+
+    const buildData = mockData.build[0];
+    console.log('buildData',buildData);
+    building.setData(buildData);
+    building.draw();
+    
+    const box = new THREE.Box3().setFromObject( building );
+    const {max,min} = box;
+
+    // const x = Math.max(max.x,min.x);
+    // const z = Math.max(max.z,min.z);
+    // global.group.position.x = 100;
+    // global.group.position.z = z;
+    // console.log('box 大小',x,z,box,Math.PI)
+    // var box = new THREE.Box3();
+    // console.log('building大小',box.expandByObject(building))
+
+    // building.position.z = 0;
+    // building.rotation.x =  (Math.PI / 2)*3
+    // building.rotation.z =  -Math.PI/2
+    // console.log('building',global.renderer.getSize(building));
+    // floor.position.z = 50 * index;
+    // floor.rotation.x =  -Math.PI / 2
+
+    // building.rotation.z =  0
+    // building.rotation.y =  Math.PI
+    // building.rotation.y =  (Math.PI/2)*3
+    // global.group.position.y =3;
     global.group.add(ground);
     global.group.add(building);
+    
+  
   }
 
+  /**
+   * 动画渲染
+   */
   function animate() {
     let {controls} = globalRef.current;
     requestAnimationFrame( animate );
 
     controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
     render();
+  }
+
+  /**
+   * 加载demo数据
+   */
+  function loadDemo(){
+    // const global = globalRef.current; 
+    // const geometry = new THREE.BoxGeometry( 1, 1, 0 );
+    // const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    // const cube = new THREE.Mesh( geometry, material );
+    // global.scene.add( cube ); 
   }
 
   function render() {

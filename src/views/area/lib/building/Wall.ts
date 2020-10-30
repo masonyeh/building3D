@@ -1,15 +1,31 @@
 
 import * as THREE from 'three';
+
 export default class Wall extends THREE.Group{
 
-  constructor(){
+  private list:Array<object> | null = [];
+
+  /**
+   * 构造函数
+   * @param list 墙数据
+   */
+  constructor(list:Array<object> | null){
     super()
-    this.draw();
+    this.list = list;
   }
 
+  /**
+   * 设置墙数据
+   * @param list 
+   */
+  setData(list:Array<object> | null){
+    this.list = list;
+  }
+
+  /**
+   * 绘画
+   */
   draw(){  
-
-
       const material = new THREE.MeshBasicMaterial({
                                                     color: 0xb5bdc3,
                                                     side: THREE.FrontSide
@@ -25,7 +41,6 @@ export default class Wall extends THREE.Group{
             cube1.rotation.y += 0.5*Math.PI;
             // 在场景中添加墙面
             this.add(cube1);
-            
  
             // 墙面2
             var cubeGeometry = new THREE.BoxGeometry(1, 50, 60);
