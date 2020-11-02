@@ -29,30 +29,43 @@ export default class Map extends THREE.Group{
                 .load(this.mapUrl,(context)=>{ 
                       //图片加载成功后，添加地面
                       const {width,height} = context.image;
+                      this.addGround(width*50,height*50);
                       console.log(`${this.mapId}F`,width,height)
                       let geometry = new THREE.PlaneGeometry(width*50, height*50, 4, 4)
                       let material = new THREE.MeshBasicMaterial({
                         map: textureLoader,
                         //添加大小网格
-                        color: THREE.FaceColors, 
-                        wireframe:true 
+                        // color: THREE.FaceColors, 
+                        // wireframe:true 
                         // transparent:true,opacity:0  //透明
                       })
                       let ground = new THREE.Mesh(geometry, material)
+                      ground.position.z = 100;
+                      ground.position.x = 0;
+                      ground.position.y = 0;
                       // ground.rotation.x =  -Math.PI / 2
                       this.add(ground)
 
-                      //机器人
-                    const robotGeometry = new THREE.BoxGeometry( 10*50, 20*50, 10*50 );
-                    const robotMaterial = new THREE.MeshBasicMaterial( {color: 0xFF0000} );
-                    const cube = new THREE.Mesh( robotGeometry, robotMaterial );
-
-                    // cube.position.x = 25723;cube.position.y = 47099;
-                    cube.position.x = 100*50;cube.position.y = 20*50;
-
-                    this.add( cube ); 
+                    
                 },undefined,(event)=>{
                   console.error(`ooops,loading mapid ${this.mapId} was fail,please check about ${this.mapUrl} is correct?`,event);
                 }); 
+  }
+
+  addGround(width:number,height:number){
+    const material = new THREE.MeshBasicMaterial({
+        color: 0xeeeeee,
+        side: THREE.FrontSide
+    });
+    // 墙面1
+    var cubeGeometry = new THREE.BoxGeometry(width+1000, height+1000, 50);
+    // 合成立方体
+    var cube1 = new THREE.Mesh( cubeGeometry, material );
+    // 设置墙面位置
+    cube1.position.x = 0;
+    cube1.position.y = 0;
+    cube1.position.z = 0;
+    // 在场景中添加墙面
+    this.add(cube1);
   }
 }

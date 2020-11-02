@@ -46,7 +46,7 @@ export default class Building extends THREE.Group{
       floor.setData(data);
       floor.draw();
       
-      floor.rotation.x = Math.PI / 2
+      // floor.rotation.x = -Math.PI / 2
       console.log('index * 200',index * 200*50)
       floor.position.y = index * 200*50;
       

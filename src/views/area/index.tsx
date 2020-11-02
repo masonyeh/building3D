@@ -51,8 +51,8 @@ export default function Index(){
     // 创建一个场景
     const scene = global.scene =  new THREE.Scene()
     // 创建一个具有透视效果的摄像机
-    const camera = global.camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000000)
-    camera.position.set( 30*50, 60*50, 700*50 );
+    const camera = global.camera = new THREE.PerspectiveCamera(-60, width / height, 1, 1000000)
+    camera.position.set( 100*50, 100*50, -1000*50 );
 
     // 创建一个 WebGL 渲染器，Three.js 还提供 <canvas>, <svg>, CSS3D 渲染器。
     const renderer = global.renderer =  new THREE.WebGLRenderer({ antialias: true } )
@@ -99,9 +99,22 @@ export default function Index(){
     console.log('buildData',buildData);
     building.setData(buildData);
     building.draw();
-    
-    const box = new THREE.Box3().setFromObject( building );
-    const {max,min} = box;
+
+      //机器人
+      const robotGeometry = new THREE.BoxGeometry( 10*50, 20*50, 10*50 );
+      const robotMaterial = new THREE.MeshBasicMaterial( {color: 0xFF0000} );
+      const cube = new THREE.Mesh( robotGeometry, robotMaterial );
+
+      // cube.position.x = 25723;cube.position.y = 47099;
+      cube.position.x = 100*50;cube.position.y = 1000;
+
+      global.group.add( cube ); 
+      // global.group.position.x = -(Math.PI /2)*2;
+
+      // global.group.rotation.y = (Math.PI /2)*4;
+      // global.group.rotation.x = -Math.PI/2;
+    // const box = new THREE.Box3().setFromObject( building );
+    // const {max,min} = box;
 
     // const x = Math.max(max.x,min.x);
     // const z = Math.max(max.z,min.z);
@@ -148,6 +161,8 @@ export default function Index(){
     // const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
     // const cube = new THREE.Mesh( geometry, material );
     // global.scene.add( cube ); 
+
+    
   }
 
   function render() {
