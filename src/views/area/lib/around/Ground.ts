@@ -18,7 +18,7 @@ export default class Ground extends THREE.Group{
    * 绘画
    */
   draw(){
-    const {innerHeight,innerWidth} = window;
+    // const {innerHeight,innerWidth} = window;
     // let geometry = new THREE.PlaneGeometry(innerWidth, innerHeight, 4, 4)
     // const textureLoader = new THREE.TextureLoader()
     //                                .load(groundImg,
