@@ -99,7 +99,7 @@ export default function Index(){
                   const sx = size.width/2,sy = size.length/2;
                   global.controls.target = new THREE.Vector3(sx,-sy,0);
                   const value = px2mm(10);
-                  const {x,y,z} = coordinateTo2D({width:value,height:value,depth:value,x:sx,y:sy});
+                  const {x,y,z} = coordinateTo2D({depth:value,x:sx,y:sy});
                   //旋转点位
                   const centerGeometry = new THREE.BoxGeometry( value,value,300000 );
                   const centerMaterial = new THREE.MeshBasicMaterial( {color: 0xFFBB00} );
